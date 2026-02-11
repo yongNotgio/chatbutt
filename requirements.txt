@@ -1,0 +1,27 @@
+# Core DSPy framework
+dspy>=2.5
+
+# HTML parsing
+beautifulsoup4>=4.12
+lxml>=5.0
+
+# Data handling
+pandas>=2.1
+
+# Vector store for RAG
+chromadb>=0.5
+
+# Embeddings
+sentence-transformers>=3.0
+
+# Chatbot UI
+gradio>=4.0
+
+# Environment variables
+python-dotenv>=1.0
+
+# Jupyter support
+ipykernel>=6.0
+
+# HuggingFace datasets (used by DSPy optimizers)
+datasets>=2.14

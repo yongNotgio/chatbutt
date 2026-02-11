@@ -1,0 +1,632 @@
+[
+  {
+    "english": "lacquer",
+    "pos": "",
+    "hiligaynon": "barnis",
+    "akeanon": "barnis",
+    "all_hiligaynon": [
+      "barnis"
+    ],
+    "all_akeanon": [
+      "barnis"
+    ]
+  },
+  {
+    "english": "adverb",
+    "pos": "noun",
+    "hiligaynon": "pang-ubay",
+    "akeanon": "pang-ubay",
+    "all_hiligaynon": [
+      "pang-ubay"
+    ],
+    "all_akeanon": [
+      "pang-ubay"
+    ]
+  },
+  {
+    "english": "abrupt",
+    "pos": "verb",
+    "hiligaynon": "lip-uton",
+    "akeanon": "tag-uron",
+    "all_hiligaynon": [
+      "lip-uton"
+    ],
+    "all_akeanon": [
+      "tag-uron"
+    ]
+  },
+  {
+    "english": "kalibutan",
+    "pos": "",
+    "hiligaynon": "suno",
+    "akeanon": "sona",
+    "all_hiligaynon": [
+      "suno",
+      "sa init kay kabugnaw"
+    ],
+    "all_akeanon": [
+      "sona"
+    ]
+  },
+  {
+    "english": "ape",
+    "pos": "",
+    "hiligaynon": "amo",
+    "akeanon": "amo",
+    "all_hiligaynon": [
+      "amo"
+    ],
+    "all_akeanon": [
+      "amo"
+    ]
+  },
+  {
+    "english": "angry",
+    "pos": "",
+    "hiligaynon": "akig",
+    "akeanon": "akig",
+    "all_hiligaynon": [
+      "akig"
+    ],
+    "all_akeanon": [
+      "akig"
+    ]
+  },
+  {
+    "english": "american",
+    "pos": "",
+    "hiligaynon": "white bread pan amerikano",
+    "akeanon": "pan amerikano",
+    "all_hiligaynon": [
+      "white bread pan amerikano"
+    ],
+    "all_akeanon": [
+      "pan amerikano"
+    ]
+  },
+  {
+    "english": "again",
+    "pos": "",
+    "hiligaynon": "liwat",
+    "akeanon": "oman",
+    "all_hiligaynon": [
+      "liwat"
+    ],
+    "all_akeanon": [
+      "oman"
+    ]
+  },
+  {
+    "english": "zenith",
+    "pos": "noun",
+    "hiligaynon": "putokputokan",
+    "akeanon": "putokputokan",
+    "all_hiligaynon": [
+      "putokputokan"
+    ],
+    "all_akeanon": [
+      "putokputokan",
+      "tingoytingoy"
+    ]
+  },
+  {
+    "english": "adult",
+    "pos": "",
+    "hiligaynon": "may edad",
+    "akeanon": "may edad",
+    "all_hiligaynon": [
+      "may edad"
+    ],
+    "all_akeanon": [
+      "may edad"
+    ]
+  },
+  {
+    "english": "x-mas",
+    "pos": "",
+    "hiligaynon": "paskwa",
+    "akeanon": "Paskwa",
+    "all_hiligaynon": [
+      "paskwa",
+      "Pagkatawo"
+    ],
+    "all_akeanon": [
+      "Paskwa",
+      "Pagkatawo"
+    ]
+  },
+  {
+    "english": "zinc",
+    "pos": "",
+    "hiligaynon": "sin zinnia: sinya",
+    "akeanon": "sinya",
+    "all_hiligaynon": [
+      "sin zinnia: sinya"
+    ],
+    "all_akeanon": [
+      "sinya"
+    ]
+  },
+  {
+    "english": "gentle",
+    "pos": "",
+    "hiligaynon": "ananay",
+    "akeanon": "ananay",
+    "all_hiligaynon": [
+      "ananay",
+      "alugaynay",
+      "daginit"
+    ],
+    "all_akeanon": [
+      "ananay"
+    ]
+  },
+  {
+    "english": "adjust",
+    "pos": "verb",
+    "hiligaynon": "isibu",
+    "akeanon": "itama",
+    "all_hiligaynon": [
+      "isibu",
+      "itama"
+    ],
+    "all_akeanon": [
+      "itama",
+      "ipaigo",
+      "ihusto"
+    ]
+  },
+  {
+    "english": "kindle",
+    "pos": "",
+    "hiligaynon": "dabdab",
+    "akeanon": "sindi",
+    "all_hiligaynon": [
+      "dabdab",
+      "sindi"
+    ],
+    "all_akeanon": [
+      "sindi",
+      "dabdab"
+    ]
+  },
+  {
+    "english": "at",
+    "pos": "",
+    "hiligaynon": "this time karon",
+    "akeanon": "sa makarayang oras",
+    "all_hiligaynon": [
+      "this time karon"
+    ],
+    "all_akeanon": [
+      "sa makarayang oras"
+    ]
+  },
+  {
+    "english": "abundant",
+    "pos": "adjective",
+    "hiligaynon": "mahamungayaon",
+    "akeanon": "dagaya",
+    "all_hiligaynon": [
+      "mahamungayaon",
+      "dagaya",
+      "madamo"
+    ],
+    "all_akeanon": [
+      "dagaya",
+      "abo",
+      "bugana"
+    ]
+  },
+  {
+    "english": "absorb",
+    "pos": "verb",
+    "hiligaynon": "supsupon",
+    "akeanon": "supsupon",
+    "all_hiligaynon": [
+      "supsupon"
+    ],
+    "all_akeanon": [
+      "supsupon"
+    ]
+  },
+  {
+    "english": "admission",
+    "pos": "noun",
+    "hiligaynon": "batonon",
+    "akeanon": "batunon",
+    "all_hiligaynon": [
+      "batonon"
+    ],
+    "all_akeanon": [
+      "batunon"
+    ]
+  },
+  {
+    "english": "ambition",
+    "pos": "noun",
+    "hiligaynon": "handum",
+    "akeanon": "handum",
+    "all_hiligaynon": [
+      "handum"
+    ],
+    "all_akeanon": [
+      "handum"
+    ]
+  },
+  {
+    "english": "analyse",
+    "pos": "",
+    "hiligaynon": "analisar",
+    "akeanon": "analisar",
+    "all_hiligaynon": [
+      "analisar"
+    ],
+    "all_akeanon": [
+      "analisar"
+    ]
+  },
+  {
+    "english": "balloon",
+    "pos": "",
+    "hiligaynon": "lobo",
+    "akeanon": "lobo",
+    "all_hiligaynon": [
+      "lobo"
+    ],
+    "all_akeanon": [
+      "lobo"
+    ]
+  },
+  {
+    "english": "knave",
+    "pos": "verb",
+    "hiligaynon": "madaya",
+    "akeanon": "madaya",
+    "all_hiligaynon": [
+      "madaya"
+    ],
+    "all_akeanon": [
+      "madaya"
+    ]
+  },
+  {
+    "english": "absent",
+    "pos": "adjective",
+    "hiligaynon": "wala",
+    "akeanon": "owa",
+    "all_hiligaynon": [
+      "wala"
+    ],
+    "all_akeanon": [
+      "owa",
+      "palta"
+    ]
+  },
+  {
+    "english": "keep",
+    "pos": "",
+    "hiligaynon": "back hawid",
+    "akeanon": "hawid",
+    "all_hiligaynon": [
+      "back hawid",
+      "pugong"
+    ],
+    "all_akeanon": [
+      "hawid"
+    ]
+  },
+  {
+    "english": "alpaca",
+    "pos": "",
+    "hiligaynon": "alpaka",
+    "akeanon": "alpaka",
+    "all_hiligaynon": [
+      "alpaka"
+    ],
+    "all_akeanon": [
+      "alpaka"
+    ]
+  },
+  {
+    "english": "yonder",
+    "pos": "",
+    "hiligaynon": "( over there) dira",
+    "akeanon": "igto",
+    "all_hiligaynon": [
+      "( over there) dira",
+      "didto"
+    ],
+    "all_akeanon": [
+      "igto"
+    ]
+  },
+  {
+    "english": "lake",
+    "pos": "",
+    "hiligaynon": "linaw",
+    "akeanon": "linaw",
+    "all_hiligaynon": [
+      "linaw"
+    ],
+    "all_akeanon": [
+      "linaw",
+      "eunaw"
+    ]
+  },
+  {
+    "english": "yellow",
+    "pos": "",
+    "hiligaynon": "cinchona bita",
+    "akeanon": "bita",
+    "all_hiligaynon": [
+      "cinchona bita"
+    ],
+    "all_akeanon": [
+      "bita"
+    ]
+  },
+  {
+    "english": "asylum",
+    "pos": "noun",
+    "hiligaynon": "alaypan",
+    "akeanon": "daeangpan",
+    "all_hiligaynon": [
+      "alaypan"
+    ],
+    "all_akeanon": [
+      "daeangpan"
+    ]
+  },
+  {
+    "english": "ambulance",
+    "pos": "",
+    "hiligaynon": "ambulansya",
+    "akeanon": "ambulansya",
+    "all_hiligaynon": [
+      "ambulansya"
+    ],
+    "all_akeanon": [
+      "ambulansya"
+    ]
+  },
+  {
+    "english": "attraction",
+    "pos": "noun",
+    "hiligaynon": "dulugokan",
+    "akeanon": "atraksyon",
+    "all_hiligaynon": [
+      "dulugokan",
+      "atraksyon"
+    ],
+    "all_akeanon": [
+      "atraksyon"
+    ]
+  },
+  {
+    "english": "kind",
+    "pos": "adjective",
+    "hiligaynon": "klase",
+    "akeanon": "maeueoy-on",
+    "all_hiligaynon": [
+      "klase",
+      "maluluy-on"
+    ],
+    "all_akeanon": [
+      "maeueoy-on"
+    ]
+  },
+  {
+    "english": "apitong",
+    "pos": "",
+    "hiligaynon": "tree apitong",
+    "akeanon": "apitong",
+    "all_hiligaynon": [
+      "tree apitong"
+    ],
+    "all_akeanon": [
+      "apitong"
+    ]
+  },
+  {
+    "english": "abc",
+    "pos": "",
+    "hiligaynon": "abakada",
+    "akeanon": "abakada",
+    "all_hiligaynon": [
+      "abakada"
+    ],
+    "all_akeanon": [
+      "abakada"
+    ]
+  },
+  {
+    "english": "aim",
+    "pos": "noun",
+    "hiligaynon": "handum",
+    "akeanon": "handum",
+    "all_hiligaynon": [
+      "handum",
+      "tilinguhaon"
+    ],
+    "all_akeanon": [
+      "handum"
+    ]
+  },
+  {
+    "english": "yell",
+    "pos": "",
+    "hiligaynon": "singgit",
+    "akeanon": "singgit",
+    "all_hiligaynon": [
+      "singgit"
+    ],
+    "all_akeanon": [
+      "singgit"
+    ]
+  },
+  {
+    "english": "arm",
+    "pos": "",
+    "hiligaynon": "wrestling ugbo",
+    "akeanon": "piyo (?)",
+    "all_hiligaynon": [
+      "wrestling ugbo"
+    ],
+    "all_akeanon": [
+      "piyo (?)"
+    ]
+  },
+  {
+    "english": "ahead",
+    "pos": "adverb",
+    "hiligaynon": "nagapanguna",
+    "akeanon": "nagapanguna",
+    "all_hiligaynon": [
+      "nagapanguna"
+    ],
+    "all_akeanon": [
+      "nagapanguna"
+    ]
+  },
+  {
+    "english": "amazement",
+    "pos": "",
+    "hiligaynon": "katingala",
+    "akeanon": "katingaeahan",
+    "all_hiligaynon": [
+      "katingala",
+      "pagkatingala"
+    ],
+    "all_akeanon": [
+      "katingaeahan"
+    ]
+  },
+  {
+    "english": "armor",
+    "pos": "noun",
+    "hiligaynon": "taming",
+    "akeanon": "taming",
+    "all_hiligaynon": [
+      "taming"
+    ],
+    "all_akeanon": [
+      "taming"
+    ]
+  },
+  {
+    "english": "admire",
+    "pos": "",
+    "hiligaynon": "dayaw",
+    "akeanon": "dayaw",
+    "all_hiligaynon": [
+      "dayaw"
+    ],
+    "all_akeanon": [
+      "dayaw"
+    ]
+  },
+  {
+    "english": "ashore",
+    "pos": "",
+    "hiligaynon": "sa duta",
+    "akeanon": "sa takas",
+    "all_hiligaynon": [
+      "sa duta"
+    ],
+    "all_akeanon": [
+      "sa takas",
+      "sa eugta"
+    ]
+  },
+  {
+    "english": "adopt",
+    "pos": "verb",
+    "hiligaynon": "sapupohon",
+    "akeanon": "sapupohon",
+    "all_hiligaynon": [
+      "sapupohon"
+    ],
+    "all_akeanon": [
+      "sapupohon"
+    ]
+  },
+  {
+    "english": "artery",
+    "pos": "",
+    "hiligaynon": "ugat",
+    "akeanon": "ugat",
+    "all_hiligaynon": [
+      "ugat",
+      "oganot"
+    ],
+    "all_akeanon": [
+      "ugat"
+    ]
+  },
+  {
+    "english": "around",
+    "pos": "adverb",
+    "hiligaynon": "sa palibut",
+    "akeanon": "sa palibot",
+    "all_hiligaynon": [
+      "sa palibut"
+    ],
+    "all_akeanon": [
+      "sa palibot"
+    ]
+  },
+  {
+    "english": "kneel",
+    "pos": "",
+    "hiligaynon": "luhod",
+    "akeanon": "euhod",
+    "all_hiligaynon": [
+      "luhod"
+    ],
+    "all_akeanon": [
+      "euhod"
+    ]
+  },
+  {
+    "english": "antique",
+    "pos": "",
+    "hiligaynon": "daan",
+    "akeanon": "daan",
+    "all_hiligaynon": [
+      "daan",
+      "dinumaan"
+    ],
+    "all_akeanon": [
+      "daan",
+      "diumaan"
+    ]
+  },
+  {
+    "english": "accomplish",
+    "pos": "verb",
+    "hiligaynon": "tigayon",
+    "akeanon": "tigayon",
+    "all_hiligaynon": [
+      "tigayon",
+      "tuman"
+    ],
+    "all_akeanon": [
+      "tigayon",
+      "nahimo",
+      "natapos"
+    ]
+  },
+  {
+    "english": "youth",
+    "pos": "noun",
+    "hiligaynon": "pagkabata-on",
+    "akeanon": "pagkabatan-on",
+    "all_hiligaynon": [
+      "pagkabata-on"
+    ],
+    "all_akeanon": [
+      "pagkabatan-on"
+    ]
+  }
+]
