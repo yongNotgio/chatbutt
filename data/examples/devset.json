@@ -1,320 +1,152 @@
 [
   {
-    "english": "accustom",
-    "pos": "verb",
-    "hiligaynon": "paghianad",
-    "akeanon": "pagnaanad",
-    "all_hiligaynon": [
-      "paghianad"
-    ],
-    "all_akeanon": [
-      "pagnaanad"
-    ]
+    "hiligaynon": "adlaw",
+    "english": "day; sun",
+    "definition": "day; sun"
   },
   {
-    "english": "anybody",
-    "pos": "",
-    "hiligaynon": "bisan sin-o",
-    "akeanon": "bisan sin-o",
-    "all_hiligaynon": [
-      "bisan sin-o"
-    ],
-    "all_akeanon": [
-      "bisan sin-o"
-    ]
+    "hiligaynon": "aslom",
+    "english": "make sour",
+    "definition": "make sour"
   },
   {
-    "english": "adjust",
-    "pos": "verb",
-    "hiligaynon": "isibu",
-    "akeanon": "itama",
-    "all_hiligaynon": [
-      "isibu",
-      "itama"
-    ],
-    "all_akeanon": [
-      "itama",
-      "ipaigo",
-      "ihusto"
-    ]
+    "hiligaynon": "anitos",
+    "english": "benevolent lesser spirits who go around counteracting the evil done by devils or evil spirits (the pagan version of a \"saint\")",
+    "definition": "benevolent lesser spirits who go around counteracting the evil done by devils or evil spirits (the pagan version of a \"saint\")"
   },
   {
-    "english": "associate",
-    "pos": "",
-    "hiligaynon": "( companion) kaupod",
-    "akeanon": "kaibahan",
-    "all_hiligaynon": [
-      "( companion) kaupod",
-      "udayhon"
-    ],
-    "all_akeanon": [
-      "kaibahan"
-    ]
+    "hiligaynon": "atipuyong",
+    "english": "feel faint, be dizzy",
+    "definition": "feel faint, be dizzy"
   },
   {
-    "english": "anus",
-    "pos": "",
-    "hiligaynon": "aripotan",
-    "akeanon": "aliputan",
-    "all_hiligaynon": [
-      "aripotan",
-      "kalipunat",
-      "sikwayan"
-    ],
-    "all_akeanon": [
-      "aliputan",
-      "buli"
-    ]
+    "hiligaynon": "anahaw",
+    "english": "fan palm: Livistona rotundifolia",
+    "definition": "fan palm: Livistona rotundifolia"
   },
   {
-    "english": "advantage",
-    "pos": "",
-    "hiligaynon": "kaayohan",
-    "akeanon": "kamaeayran",
-    "all_hiligaynon": [
-      "kaayohan",
-      "ikaayo"
-    ],
-    "all_akeanon": [
-      "kamaeayran"
-    ]
+    "hiligaynon": "apdo",
+    "english": "bile; bile duct (and/or) gall bladder",
+    "definition": "bile; bile duct (and/or) gall bladder"
   },
   {
-    "english": "accept",
-    "pos": "verb",
-    "hiligaynon": "ako",
-    "akeanon": "aku",
-    "all_hiligaynon": [
-      "ako"
-    ],
-    "all_akeanon": [
-      "aku",
-      "akuon"
-    ]
+    "hiligaynon": "angkas",
+    "english": "to ride together, hop on (a bicycle)",
+    "definition": "to ride together, hop on (a bicycle)"
   },
   {
-    "english": "ash",
-    "pos": "",
-    "hiligaynon": "can basurahan",
-    "akeanon": "abuhan",
-    "all_hiligaynon": [
-      "can basurahan"
-    ],
-    "all_akeanon": [
-      "abuhan"
-    ]
+    "hiligaynon": "anting-anting",
+    "english": "amulet, charm (supposedly possessing a secret power allowing a person to avoid injury); power of invulnerability",
+    "definition": "amulet, charm (supposedly possessing a secret power allowing a person to avoid injury); power of invulnerability"
   },
   {
-    "english": "general",
-    "pos": "",
-    "hiligaynon": "( military) heneral",
-    "akeanon": "heneral",
-    "all_hiligaynon": [
-      "( military) heneral"
-    ],
-    "all_akeanon": [
-      "heneral"
-    ]
+    "hiligaynon": "anay",
+    "english": "termite (general term)",
+    "definition": "termite (general term)"
   },
   {
-    "english": "keep",
-    "pos": "",
-    "hiligaynon": "in check pugong",
-    "akeanon": "hawid",
-    "all_hiligaynon": [
-      "in check pugong"
-    ],
-    "all_akeanon": [
-      "hawid"
-    ]
+    "hiligaynon": "abo",
+    "english": "ash(es); to make ashes",
+    "definition": "ash(es); to make ashes"
   },
   {
-    "english": "arm",
-    "pos": "",
-    "hiligaynon": "butkon",
-    "akeanon": "butkon",
-    "all_hiligaynon": [
-      "butkon",
-      "braso"
-    ],
-    "all_akeanon": [
-      "butkon",
-      "braso"
-    ]
+    "hiligaynon": "ama-ama",
+    "english": "stepfather",
+    "definition": "stepfather"
   },
   {
-    "english": "arm",
-    "pos": "",
-    "hiligaynon": "wrestling ugbo",
-    "akeanon": "piyo (?)",
-    "all_hiligaynon": [
-      "wrestling ugbo"
-    ],
-    "all_akeanon": [
-      "piyo (?)"
-    ]
+    "hiligaynon": "asog",
+    "english": "lesbian; any woman who acts outside of the female role; tomboy",
+    "definition": "lesbian; any woman who acts outside of the female role; tomboy"
   },
   {
-    "english": "aim",
-    "pos": "noun",
-    "hiligaynon": "handum",
-    "akeanon": "handum",
-    "all_hiligaynon": [
-      "handum",
-      "tilinguhaon"
-    ],
-    "all_akeanon": [
-      "handum"
-    ]
+    "hiligaynon": "alima",
+    "english": "to use one’s hands on",
+    "definition": "to use one’s hands on"
   },
   {
-    "english": "afterbirth",
-    "pos": "",
-    "hiligaynon": "inunlan",
-    "akeanon": "inunlan",
-    "all_hiligaynon": [
-      "inunlan"
-    ],
-    "all_akeanon": [
-      "inunlan"
-    ]
+    "hiligaynon": "asin",
+    "english": "salt; to salt, put salt into",
+    "definition": "salt; to salt, put salt into"
   },
   {
-    "english": "armpit",
-    "pos": "",
-    "hiligaynon": "ilok",
-    "akeanon": "ilukon",
-    "all_hiligaynon": [
-      "ilok"
-    ],
-    "all_akeanon": [
-      "ilukon"
-    ]
+    "hiligaynon": "anih-an",
+    "english": "the harvest",
+    "definition": "the harvest"
   },
   {
-    "english": "keep",
-    "pos": "",
-    "hiligaynon": "back hawid",
-    "akeanon": "hawid",
-    "all_hiligaynon": [
-      "back hawid",
-      "pugong"
-    ],
-    "all_akeanon": [
-      "hawid"
-    ]
+    "hiligaynon": "a-pat",
+    "english": "four",
+    "definition": "four"
   },
   {
-    "english": "arm",
-    "pos": "",
-    "hiligaynon": "( to put one's arms on or round another's shoulder) agbay",
-    "akeanon": "agbay",
-    "all_hiligaynon": [
-      "( to put one's arms on or round another's shoulder) agbay"
-    ],
-    "all_akeanon": [
-      "agbay"
-    ]
+    "hiligaynon": "atimon",
+    "english": "canteloupe: Cucumis melo L.",
+    "definition": "canteloupe: Cucumis melo L."
   },
   {
-    "english": "yellow",
-    "pos": "",
-    "hiligaynon": "cinchona bita",
-    "akeanon": "bita",
-    "all_hiligaynon": [
-      "cinchona bita"
-    ],
-    "all_akeanon": [
-      "bita"
-    ]
+    "hiligaynon": "ama",
+    "english": "father",
+    "definition": "father"
   },
   {
-    "english": "angsana",
-    "pos": "",
-    "hiligaynon": "wood nara",
-    "akeanon": "nara",
-    "all_hiligaynon": [
-      "wood nara"
-    ],
-    "all_akeanon": [
-      "nara"
-    ]
+    "hiligaynon": "agiw",
+    "english": "soot, black smoke deposit on wall or ceiling; to smudge, blacken with soot",
+    "definition": "soot, black smoke deposit on wall or ceiling; to smudge, blacken with soot"
   },
   {
-    "english": "alarm",
-    "pos": "noun",
-    "hiligaynon": "patunda",
-    "akeanon": "paandam",
-    "all_hiligaynon": [
-      "patunda"
-    ],
-    "all_akeanon": [
-      "paandam"
-    ]
+    "hiligaynon": "ali-taptap",
+    "english": "glowworm, founds on rocks at high tide",
+    "definition": "glowworm, founds on rocks at high tide"
   },
   {
-    "english": "aback adverb ( to be taken aback)",
-    "pos": "",
-    "hiligaynon": "palak",
-    "akeanon": "paeak",
-    "all_hiligaynon": [
-      "palak"
-    ],
-    "all_akeanon": [
-      "paeak"
-    ]
+    "hiligaynon": "amihan",
+    "english": "northeast wind",
+    "definition": "northeast wind"
   },
   {
-    "english": "attend",
-    "pos": "verb",
-    "hiligaynon": "dumugok",
-    "akeanon": "attend",
-    "all_hiligaynon": [
-      "dumugok",
-      "alagaran",
-      "asikasohon"
-    ],
-    "all_akeanon": [
-      "attend"
-    ]
+    "hiligaynon": "apid",
+    "english": "join, attach, enclose",
+    "definition": "join, attach, enclose"
   },
   {
-    "english": "kitchen",
-    "pos": "",
-    "hiligaynon": "kusina",
-    "akeanon": "kusina",
-    "all_hiligaynon": [
-      "kusina",
-      "lulutoan"
-    ],
-    "all_akeanon": [
-      "kusina"
-    ]
+    "hiligaynon": "atang",
+    "english": "put up, hoist",
+    "definition": "put up, hoist"
   },
   {
-    "english": "ash",
-    "pos": "",
-    "hiligaynon": "abu",
-    "akeanon": "abu",
-    "all_hiligaynon": [
-      "abu"
-    ],
-    "all_akeanon": [
-      "abu"
-    ]
+    "hiligaynon": "ani",
+    "english": "to harvest, gather a crop",
+    "definition": "to harvest, gather a crop"
   },
   {
-    "english": "activity",
-    "pos": "noun",
-    "hiligaynon": "hikot",
-    "akeanon": "obra",
-    "all_hiligaynon": [
-      "hikot",
-      "hilikoton"
-    ],
-    "all_akeanon": [
-      "obra",
-      "ueobrahon"
-    ]
+    "hiligaynon": "anak",
+    "english": "godchild; become a godparent, be a godparent",
+    "definition": "godchild; become a godparent, be a godparent"
+  },
+  {
+    "hiligaynon": "apaw",
+    "english": "to exceed, go beyond; above one’s head (as river water)",
+    "definition": "to exceed, go beyond; above one’s head (as river water)"
+  },
+  {
+    "hiligaynon": "antabay-an",
+    "english": "wait for one another",
+    "definition": "wait for one another"
+  },
+  {
+    "hiligaynon": "antabay",
+    "english": "wait for",
+    "definition": "wait for"
+  },
+  {
+    "hiligaynon": "abot",
+    "english": "a late-comer to dinner (or any meal)",
+    "definition": "a late-comer to dinner (or any meal)"
+  },
+  {
+    "hiligaynon": "apdoh",
+    "english": "bile; bile duct (and/or) gall bladder",
+    "definition": "bile; bile duct (and/or) gall bladder"
   }
 ]

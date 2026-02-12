@@ -1,5 +1,7 @@
 """
-Gradio chatbot interface for the English-Hiligaynon-Akeanon translator.
+Gradio chatbot interface for the English ↔ Hiligaynon translator.
+
+Conversational, context-aware, and vowel-structure-aware.
 """
 
 import os
@@ -14,31 +16,29 @@ import gradio as gr
 import dspy
 from dotenv import load_dotenv
 
-from src.modules import TranslationChatbot, format_response
+from src.modules import HiligaynonChatbot
 from src.optimize import setup_lm, load_program
 
 
-# --- Setup ---
+# ── Setup ────────────────────────────────────────────────────────────────────
 load_dotenv(project_root / ".env")
 
-# Global chatbot instance
-chatbot_instance: TranslationChatbot | None = None
+chatbot_instance: HiligaynonChatbot | None = None
 
 
 def initialize():
     """Initialize the LM and chatbot."""
     global chatbot_instance
 
-    # Configure LM
     api_key = os.getenv("GROQ_API_KEY")
     if api_key and api_key != "gsk_your-key-here":
-        setup_lm(provider="groq", model="llama-3.3-70b-versatile", api_key=api_key)
+        setup_lm(provider="groq", model="llama-3.1-8b-instant", api_key=api_key)
     else:
         print("No Groq API key. Attempting Ollama (local)...")
         setup_lm(provider="ollama", model="llama3.2")
 
-    # Load optimized program if available, otherwise use base
-    optimized_path = project_root / "optimized" / "translation_v1.json"
+    # Load optimized program if available
+    optimized_path = project_root / "optimized" / "hiligaynon_v1.json"
     chroma_dir = str(project_root / "chroma_db")
 
     if optimized_path.exists():
@@ -46,63 +46,60 @@ def initialize():
         chatbot_instance = load_program(optimized_path, chroma_dir=chroma_dir)
     else:
         print("No optimized program found. Using base chatbot.")
-        chatbot_instance = TranslationChatbot(chroma_dir=chroma_dir)
+        chatbot_instance = HiligaynonChatbot(chroma_dir=chroma_dir)
 
 
-def translate(message: str, history: list) -> str:
-    """
-    Handle a chat message and return the translation.
-    """
+def chat(message: str, history: list) -> str:
+    """Handle a chat message."""
     global chatbot_instance
 
     if chatbot_instance is None:
         return "Error: Chatbot not initialized. Please restart the app."
 
     if not message.strip():
-        return "Please enter an English word, phrase, or sentence to translate."
+        return "Please type a word, phrase, or sentence in English or Hiligaynon."
 
     try:
-        prediction = chatbot_instance(user_query=message)
-        response = format_response(prediction)
-        return response
+        prediction = chatbot_instance(user_message=message)
+        return prediction.response
     except Exception as e:
-        return f"Sorry, I encountered an error: {str(e)}\n\nPlease try rephrasing your query."
+        return f"Sorry, something went wrong: {str(e)}\n\nPlease try again."
 
 
-# --- Gradio UI ---
-TITLE = "🌏 English ↔ Hiligaynon ↔ Akeanon Translator"
+# ── Gradio UI ────────────────────────────────────────────────────────────────
+
+TITLE = "🇵🇭 English ↔ Hiligaynon Chatbot"
 
 DESCRIPTION = """
-**Translate English words, phrases, and sentences into Hiligaynon and Akeanon (Aklanon).**
+**Translate between English and Hiligaynon (Ilonggo) — conversationally.**
 
-Hiligaynon (Ilonggo) is a major language of the Western Visayas region in the Philippines.
-Akeanon (Aklanon) is spoken in Aklan province, Philippines.
+This chatbot understands Hiligaynon word structure, including vowel interchangeability
+(**o ↔ u**, **i ↔ e**). Type in either language and it will translate, explain, and
+help you learn.
 
-Dictionary data by **Melchor F. Cichon** from [How To Speak Aklanon The Easy Way](https://howtospeakaklanon.blogspot.com/).
-
-**Try asking:**
-- "Translate 'good morning'"
-- "How do you say 'I love you' in Akeanon?"
-- "What is the Hiligaynon word for water?"
-- "Translate: The house is beautiful"
+**Try:**
+- "What does *maayo* mean?"
+- "How do you say *beautiful* in Hiligaynon?"
+- "Translate: I love you"
+- "diin ka gakadto?" (Where are you going?)
+- "Explain how Hiligaynon verb affixes work"
 """
 
 EXAMPLES = [
-    "Translate 'hello'",
-    "How do you say 'thank you' in Akeanon?",
-    "What is 'water' in Hiligaynon?",
+    "What does 'maayo' mean?",
+    "How do you say 'good morning' in Hiligaynon?",
     "Translate: I love you",
-    "How do you say 'good morning'?",
+    "ano ang buot silingon sang 'balay'?",
+    "What is 'water' in Hiligaynon?",
+    "Explain the difference between 'o' and 'u' in Hiligaynon",
+    "diin ka gakadto?",
     "Translate: The food is delicious",
-    "What is the word for 'friend'?",
-    "Translate: Where are you going?",
 ]
 
 
 def create_app():
-    """Create and return the Gradio app."""
     demo = gr.ChatInterface(
-        fn=translate,
+        fn=chat,
         title=TITLE,
         description=DESCRIPTION,
         examples=EXAMPLES,
@@ -111,7 +108,7 @@ def create_app():
 
 
 if __name__ == "__main__":
-    print("Initializing translation chatbot...")
+    print("Initializing Hiligaynon chatbot...")
     initialize()
     print("Starting Gradio app...")
     app = create_app()

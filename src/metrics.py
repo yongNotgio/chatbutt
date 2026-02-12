@@ -1,109 +1,99 @@
 """
-Evaluation metrics for the translation chatbot.
+Evaluation metrics for the Hiligaynon ↔ English chatbot.
 
-These metrics are used by DSPy optimizers to assess quality of translations.
+Metrics assess:
+1. Whether the response contains a valid translation
+2. Vowel-variant awareness (o↔u, i↔e matching)
+3. Response quality and helpfulness
 """
 
 import json
+import re
 from pathlib import Path
 
+from src.retriever import normalize_vowels
 
-def exact_match_metric(example, prediction, trace=None) -> float:
+
+def _contains_word(text: str, word: str) -> bool:
+    """Check if text contains the word (case-insensitive, word-boundary aware)."""
+    return bool(re.search(r"\b" + re.escape(word.lower()) + r"\b", text.lower()))
+
+
+def _vowel_match(predicted: str, expected: str) -> bool:
+    """Check if two strings match when vowels are normalized (o↔u, i↔e)."""
+    return normalize_vowels(predicted.strip()) == normalize_vowels(expected.strip())
+
+
+def translation_relevance_metric(example, prediction, trace=None) -> float:
     """
-    Check if the predicted translation exactly matches any known translation.
-    Used primarily for single-word lookups where exact answers exist.
+    Check if the chatbot's response is relevant and contains correct information.
 
-    Returns 1.0 for exact match, 0.5 for partial match, 0.0 for no match.
-    """
-    score = 0.0
-
-    # Check Hiligaynon
-    if hasattr(prediction, "hiligaynon") and hasattr(example, "hiligaynon"):
-        pred_hil = prediction.hiligaynon.lower().strip()
-        # Check against all known translations
-        all_hil = example.get("all_hiligaynon", [example.hiligaynon])
-        if isinstance(all_hil, str):
-            all_hil = [all_hil]
-        all_hil_lower = [h.lower().strip() for h in all_hil]
-
-        if pred_hil in all_hil_lower:
-            score += 0.5
-        elif any(h in pred_hil or pred_hil in h for h in all_hil_lower):
-            score += 0.25
-
-    # Check Akeanon
-    if hasattr(prediction, "akeanon") and hasattr(example, "akeanon"):
-        pred_ake = prediction.akeanon.lower().strip()
-        all_ake = example.get("all_akeanon", [example.akeanon])
-        if isinstance(all_ake, str):
-            all_ake = [all_ake]
-        all_ake_lower = [a.lower().strip() for a in all_ake]
-
-        if pred_ake in all_ake_lower:
-            score += 0.5
-        elif any(a in pred_ake or pred_ake in a for a in all_ake_lower):
-            score += 0.25
-
-    return score
-
-
-def translation_quality_metric(example, prediction, trace=None) -> float:
-    """
-    A combined metric that checks:
-    1. Whether the output contains valid translations (not empty)
-    2. Format correctness
-    3. Dictionary match (if available)
-
-    Returns a score between 0.0 and 1.0.
+    Scoring:
+    - 0.4: Response mentions the key Hiligaynon word (or vowel variant)
+    - 0.3: Response mentions the English meaning (or part of it)
+    - 0.2: Response is non-empty and seems like a real answer
+    - 0.1: Response is conversational (not just the raw word)
     """
     score = 0.0
-    max_score = 0.0
+    response = getattr(prediction, "response", "")
+    if not response.strip():
+        return 0.0
 
-    # Check that translations are non-empty
-    max_score += 0.2
-    if hasattr(prediction, "hiligaynon") and prediction.hiligaynon.strip():
+    # Get expected values
+    expected_hil = getattr(example, "hiligaynon", "")
+    expected_eng = getattr(example, "english", "")
+
+    # Score: response is non-empty and substantial
+    if len(response.strip()) > 10:
+        score += 0.2
+
+    # Score: mentions the Hiligaynon word (with vowel flexibility)
+    if expected_hil:
+        resp_norm = normalize_vowels(response)
+        hil_norm = normalize_vowels(expected_hil)
+        if hil_norm in resp_norm:
+            score += 0.4
+        elif any(
+            normalize_vowels(w) == hil_norm
+            for w in re.findall(r"\b\w+\b", response.lower())
+        ):
+            score += 0.4
+        elif _contains_word(response, expected_hil):
+            score += 0.3
+
+    # Score: mentions the English meaning
+    if expected_eng:
+        # Check if any significant word from the English meaning appears
+        eng_words = [
+            w for w in re.findall(r"\b\w+\b", expected_eng.lower())
+            if len(w) > 3
+        ]
+        if eng_words:
+            matches = sum(1 for w in eng_words if _contains_word(response, w))
+            match_ratio = matches / len(eng_words)
+            score += 0.3 * min(match_ratio * 2, 1.0)  # up to 0.3
+
+    # Score: conversational (contains explanation, not just a word)
+    if len(response.split()) > 5:
         score += 0.1
-    if hasattr(prediction, "akeanon") and prediction.akeanon.strip():
-        score += 0.1
 
-    # Check format (should not contain English words from the query)
-    max_score += 0.2
-    if hasattr(example, "english") and hasattr(prediction, "hiligaynon"):
-        english_lower = example.english.lower()
-        hil_lower = prediction.hiligaynon.lower()
-        ake_lower = getattr(prediction, "akeanon", "").lower()
-        # Penalize if the translation is just the English word repeated
-        if english_lower != hil_lower:
-            score += 0.1
-        if english_lower != ake_lower:
-            score += 0.1
-
-    # Dictionary exact match (highest weight)
-    max_score += 0.6
-    exact_score = exact_match_metric(example, prediction, trace)
-    score += exact_score * 0.6
-
-    return score / max_score if max_score > 0 else 0.0
+    return min(score, 1.0)
 
 
-def load_examples(examples_path: str | Path) -> list[dict]:
-    """Load evaluation examples from a JSON file."""
+def load_examples(examples_path: str | Path) -> list:
+    """Load evaluation examples from JSON. Returns list of dspy.Example."""
+    import dspy
+
     with open(examples_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-
-    # Convert to dspy.Example objects
-    import dspy
 
     examples = []
     for item in data:
         ex = dspy.Example(
-            english=item["english"],
-            pos=item.get("pos", ""),
-            hiligaynon=item["hiligaynon"],
-            akeanon=item["akeanon"],
-            all_hiligaynon=item.get("all_hiligaynon", [item["hiligaynon"]]),
-            all_akeanon=item.get("all_akeanon", [item["akeanon"]]),
-        ).with_inputs("english", "pos")
+            hiligaynon=item.get("hiligaynon", ""),
+            english=item.get("english", ""),
+            definition=item.get("definition", ""),
+        ).with_inputs("hiligaynon", "english")
         examples.append(ex)
 
     return examples

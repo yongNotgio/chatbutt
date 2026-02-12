@@ -1,31 +1,69 @@
 """
-Dictionary retriever using ChromaDB for the translation chatbot.
+Dictionary retriever using ChromaDB for the Hiligaynon ↔ English chatbot.
 
-Embeds all dictionary entries into a vector store and provides
-semantic search for relevant context during translation.
+Features:
+- Semantic search via sentence-transformers embeddings
+- Vowel-aware search: generates o↔u, i↔e variants for broader matching
+- Supports both Hiligaynon→English and English→Hiligaynon lookups
 """
 
 import json
+import re
 from pathlib import Path
 import chromadb
-from chromadb.config import Settings
 
 
-COLLECTION_NAME = "dictionary_entries"
+COLLECTION_NAME = "hiligaynon_dictionary"
 
+
+# ── Vowel-awareness helpers ──────────────────────────────────────────────────
+
+def generate_vowel_variants(word: str) -> list[str]:
+    """
+    Generate vowel-swapped variants of a word.
+    In Hiligaynon, o↔u and i↔e are interchangeable.
+
+    Example:
+        'buot'  → ['buot', 'boot', 'buut', 'bout']
+        'diin'  → ['diin', 'deen', 'dien', 'dein']
+    """
+    word_lower = word.lower().strip()
+    if not word_lower:
+        return [word_lower]
+
+    # Map of interchangeable vowels
+    swaps = {"o": "u", "u": "o", "i": "e", "e": "i"}
+
+    variants = {word_lower}
+
+    # Generate all single-swap and multi-swap variants
+    def _gen(chars: list, idx: int, current: list):
+        if idx == len(chars):
+            variants.add("".join(current))
+            return
+        _gen(chars, idx + 1, current + [chars[idx]])
+        if chars[idx] in swaps:
+            _gen(chars, idx + 1, current + [swaps[chars[idx]]])
+
+    _gen(list(word_lower), 0, [])
+    return list(variants)
+
+
+def normalize_vowels(text: str) -> str:
+    """Normalize vowels for comparison: o→u, e→i (canonical form)."""
+    return text.lower().replace("o", "u").replace("e", "i")
+
+
+# ── Index builder ────────────────────────────────────────────────────────────
 
 def build_index(
     dictionary_path: str | Path,
     persist_dir: str | Path = "chroma_db",
-    embedding_model: str = "all-MiniLM-L6-v2",
 ) -> chromadb.Collection:
     """
-    Build (or rebuild) the ChromaDB index from the parsed dictionary.
+    Build the ChromaDB index from the merged dictionary.
 
-    Args:
-        dictionary_path: Path to dictionary.json
-        persist_dir: Directory to persist the ChromaDB data
-        embedding_model: Sentence-transformers model name for embeddings
+    Expects entries with {word, definition, source?}.
     """
     dictionary_path = Path(dictionary_path)
     persist_dir = Path(persist_dir)
@@ -33,69 +71,45 @@ def build_index(
     with open(dictionary_path, "r", encoding="utf-8") as f:
         entries = json.load(f)
 
-    # Create ChromaDB client with persistence
     client = chromadb.PersistentClient(path=str(persist_dir))
 
-    # Delete existing collection if it exists (rebuild)
+    # Rebuild from scratch
     try:
         client.delete_collection(COLLECTION_NAME)
     except Exception:
         pass
 
-    # Create collection with default embedding function
-    # ChromaDB will use sentence-transformers automatically
     collection = client.create_collection(
         name=COLLECTION_NAME,
         metadata={"hnsw:space": "cosine"},
     )
 
-    # Prepare documents and metadata
     documents = []
     metadatas = []
     ids = []
 
     for i, entry in enumerate(entries):
-        # Create a rich document string for embedding
-        doc_parts = [f"English: {entry['english']}"]
-        if entry.get("pos"):
-            doc_parts.append(f"({entry['pos']})")
-        if entry.get("hiligaynon"):
-            hil = (
-                ", ".join(entry["hiligaynon"])
-                if isinstance(entry["hiligaynon"], list)
-                else entry["hiligaynon"]
-            )
-            doc_parts.append(f"Hiligaynon: {hil}")
-        if entry.get("akeanon"):
-            ake = (
-                ", ".join(entry["akeanon"])
-                if isinstance(entry["akeanon"], list)
-                else entry["akeanon"]
-            )
-            doc_parts.append(f"Akeanon: {ake}")
+        word = entry.get("word", "").strip()
+        defn = entry.get("definition", "").strip()
 
-        doc = " | ".join(doc_parts)
+        if not word or not defn:
+            continue
+
+        # Build document text for embedding — includes word + definition
+        # Also include the canonical vowel-normalized form for better matching
+        normalized = normalize_vowels(word)
+        doc = f"Hiligaynon: {word} | Definition: {defn}"
+
         documents.append(doc)
-
-        metadatas.append(
-            {
-                "english": entry["english"],
-                "pos": entry.get("pos", ""),
-                "hiligaynon": (
-                    "; ".join(entry["hiligaynon"])
-                    if isinstance(entry["hiligaynon"], list)
-                    else entry.get("hiligaynon", "")
-                ),
-                "akeanon": (
-                    "; ".join(entry["akeanon"])
-                    if isinstance(entry["akeanon"], list)
-                    else entry.get("akeanon", "")
-                ),
-            }
-        )
+        metadatas.append({
+            "word": word,
+            "definition": defn[:500],  # ChromaDB metadata limit
+            "normalized": normalized,
+            "source": entry.get("source", ""),
+        })
         ids.append(f"entry_{i}")
 
-    # Add in batches (ChromaDB has a limit of ~41666 per batch)
+    # Add in batches
     batch_size = 5000
     for start in range(0, len(documents), batch_size):
         end = min(start + batch_size, len(documents))
@@ -105,16 +119,19 @@ def build_index(
             ids=ids[start:end],
         )
 
-    print(f"Indexed {len(documents)} dictionary entries into ChromaDB at {persist_dir}")
+    print(f"Indexed {len(documents)} entries into ChromaDB at {persist_dir}")
     return collection
 
 
+# ── Collection access ────────────────────────────────────────────────────────
+
 def get_collection(persist_dir: str | Path = "chroma_db") -> chromadb.Collection:
     """Get the existing ChromaDB collection."""
-    persist_dir = Path(persist_dir)
     client = chromadb.PersistentClient(path=str(persist_dir))
     return client.get_collection(name=COLLECTION_NAME)
 
+
+# ── Retrieval functions ──────────────────────────────────────────────────────
 
 def retrieve(
     query: str,
@@ -123,58 +140,63 @@ def retrieve(
     top_k: int = 10,
 ) -> list[str]:
     """
-    Retrieve the top-k most relevant dictionary entries for a query.
-
-    Args:
-        query: The search query (English word, phrase, or sentence)
-        collection: Optional pre-loaded ChromaDB collection
-        persist_dir: ChromaDB persistence directory
-        top_k: Number of results to return
-
-    Returns:
-        List of formatted dictionary entry strings for use as context
+    Semantic search for the top-k most relevant dictionary entries.
     """
     if collection is None:
         collection = get_collection(persist_dir)
 
-    results = collection.query(
-        query_texts=[query],
-        n_results=top_k,
-    )
+    results = collection.query(query_texts=[query], n_results=top_k)
 
-    # Format results as context strings
-    context_entries = []
+    context = []
     if results and results["documents"]:
-        for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
-            context_entries.append(doc)
+        for doc in results["documents"][0]:
+            context.append(doc)
+    return context
 
-    return context_entries
 
-
-def retrieve_exact(
-    english_word: str,
+def retrieve_vowel_aware(
+    word: str,
     collection: chromadb.Collection | None = None,
     persist_dir: str | Path = "chroma_db",
-) -> list[dict]:
+    top_k: int = 10,
+) -> list[str]:
     """
-    Try to find an exact match for an English word in the dictionary.
-
-    Returns list of matching metadata dicts.
+    Retrieve entries using vowel variants of the query word.
+    Generates o↔u, i↔e variants and searches for all of them.
+    Returns deduplicated results.
     """
     if collection is None:
         collection = get_collection(persist_dir)
 
-    # Use metadata filtering for exact match
-    results = collection.get(
-        where={"english": english_word.lower()},
-    )
+    variants = generate_vowel_variants(word)
+    seen = set()
+    context = []
 
-    matches = []
-    if results and results["metadatas"]:
-        for meta in results["metadatas"]:
-            matches.append(meta)
+    # Search with each variant
+    for variant in variants[:6]:  # limit to avoid too many queries
+        results = collection.query(query_texts=[variant], n_results=top_k)
+        if results and results["documents"]:
+            for doc in results["documents"][0]:
+                if doc not in seen:
+                    seen.add(doc)
+                    context.append(doc)
 
-    return matches
+    # Also try normalized vowel search via metadata
+    normalized = normalize_vowels(word)
+    try:
+        meta_results = collection.get(
+            where={"normalized": normalized},
+            limit=top_k,
+        )
+        if meta_results and meta_results["documents"]:
+            for doc in meta_results["documents"]:
+                if doc not in seen:
+                    seen.add(doc)
+                    context.append(doc)
+    except Exception:
+        pass  # metadata filter may fail if field not indexed
+
+    return context[:top_k * 2]  # cap results
 
 
 def retrieve_for_sentence(
@@ -184,18 +206,14 @@ def retrieve_for_sentence(
     top_k_per_word: int = 3,
 ) -> list[str]:
     """
-    Retrieve dictionary entries for each significant word in a sentence.
-    Deduplicates and returns a combined context list.
+    Retrieve entries for each significant word in a sentence.
+    Uses vowel-aware retrieval for each word.
     """
     if collection is None:
         collection = get_collection(persist_dir)
 
-    # Simple tokenization - split on spaces and remove punctuation
-    import re
+    words = re.findall(r"\b[a-zA-ZáàâäéèêëíìîïóòôöúùûüñÁÀÂÄÉÈÊËÍÌÎÏÓÒÔÖÚÙÛÜÑ\-]+\b", sentence.lower())
 
-    words = re.findall(r"\b[a-zA-Z]+\b", sentence.lower())
-
-    # Filter out very common English words that likely aren't in the dictionary
     stop_words = {
         "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
         "have", "has", "had", "do", "does", "did", "will", "would", "could",
@@ -203,43 +221,55 @@ def retrieve_for_sentence(
         "on", "with", "at", "by", "from", "it", "its", "this", "that",
         "these", "those", "i", "you", "he", "she", "we", "they", "me",
         "him", "her", "us", "them", "my", "your", "his", "our", "their",
+        "what", "how", "translate", "say", "mean", "means", "word",
+        # Hiligaynon function words
+        "ang", "sang", "sing", "sa", "si", "ni", "kay", "nga", "kag",
+        "na", "pa", "man", "lang", "gid",
     }
 
-    significant_words = [w for w in words if w not in stop_words and len(w) > 1]
+    significant = [w for w in words if w not in stop_words and len(w) > 1]
 
-    # Retrieve for each word
-    seen_docs = set()
+    seen = set()
     context = []
 
-    for word in significant_words:
-        results = retrieve(word, collection, persist_dir, top_k=top_k_per_word)
+    # First: semantic search on the full sentence
+    full_results = retrieve(sentence, collection, persist_dir, top_k=5)
+    for doc in full_results:
+        if doc not in seen:
+            seen.add(doc)
+            context.append(doc)
+
+    # Then: vowel-aware search per word
+    for word in significant:
+        results = retrieve_vowel_aware(word, collection, persist_dir, top_k=top_k_per_word)
         for doc in results:
-            if doc not in seen_docs:
-                seen_docs.add(doc)
+            if doc not in seen:
+                seen.add(doc)
                 context.append(doc)
 
     return context
 
 
-# --- CLI ---
+# ── CLI ──────────────────────────────────────────────────────────────────────
+
 if __name__ == "__main__":
     import sys
 
-    project_root = Path(__file__).parent.parent
-    dict_path = project_root / "data" / "processed" / "dictionary.json"
-    db_path = project_root / "chroma_db"
+    root = Path(__file__).parent.parent
+    dict_path = root / "data" / "processed" / "dictionary.json"
+    db_path = root / "chroma_db"
 
     if not dict_path.exists():
-        print(f"Dictionary not found at {dict_path}. Run parse_html.py first.")
+        print(f"Dictionary not found at {dict_path}. Run load_data.py first.")
         sys.exit(1)
 
     print("Building ChromaDB index...")
-    collection = build_index(dict_path, db_path)
+    coll = build_index(dict_path, db_path)
 
     # Test retrieval
-    test_queries = ["hello", "good morning", "love", "eat", "water"]
-    for q in test_queries:
-        results = retrieve(q, collection, db_path, top_k=3)
+    tests = ["maayong aga", "good morning", "love", "tubig", "water", "buut", "boot"]
+    for q in tests:
+        results = retrieve_vowel_aware(q, coll, db_path, top_k=3)
         print(f"\nQuery: '{q}'")
         for r in results:
-            print(f"  -> {r}")
+            print(f"  → {r[:120]}")

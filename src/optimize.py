@@ -1,10 +1,9 @@
 """
-DSPy optimization pipeline for the translation chatbot.
+DSPy optimization pipeline for the Hiligaynon ↔ English chatbot.
 
 Supports:
 1. BootstrapFewShot — good with 10-50 examples
 2. MIPROv2 — better with 200+ examples, optimizes instructions + demos
-3. BootstrapFinetune — fine-tunes a local model (requires GPU)
 """
 
 import json
@@ -12,8 +11,8 @@ from pathlib import Path
 
 import dspy
 
-from src.modules import TranslationChatbot
-from src.metrics import translation_quality_metric, load_examples
+from src.modules import HiligaynonChatbot
+from src.metrics import translation_relevance_metric, load_examples
 
 
 def setup_lm(
@@ -60,12 +59,12 @@ def setup_lm(
 
 
 def optimize_bootstrap_fewshot(
-    chatbot: TranslationChatbot,
+    chatbot: HiligaynonChatbot,
     trainset: list,
-    metric=translation_quality_metric,
+    metric=translation_relevance_metric,
     max_bootstrapped_demos: int = 4,
     max_labeled_demos: int = 8,
-) -> TranslationChatbot:
+) -> HiligaynonChatbot:
     """
     Optimize using BootstrapFewShot.
     Best for 10-50 training examples.
@@ -83,11 +82,11 @@ def optimize_bootstrap_fewshot(
 
 
 def optimize_mipro(
-    chatbot: TranslationChatbot,
+    chatbot: HiligaynonChatbot,
     trainset: list,
-    metric=translation_quality_metric,
+    metric=translation_relevance_metric,
     num_trials: int = 20,
-) -> TranslationChatbot:
+) -> HiligaynonChatbot:
     """
     Optimize using MIPROv2.
     Best for 200+ examples. Jointly optimizes instructions and demos.
@@ -110,9 +109,9 @@ def optimize_mipro(
 
 
 def evaluate_program(
-    program: TranslationChatbot,
+    program: HiligaynonChatbot,
     devset: list,
-    metric=translation_quality_metric,
+    metric=translation_relevance_metric,
 ) -> float:
     """Evaluate a program on the dev set."""
     evaluator = dspy.Evaluate(
@@ -129,7 +128,7 @@ def evaluate_program(
     return score
 
 
-def save_program(program: TranslationChatbot, path: str | Path):
+def save_program(program: HiligaynonChatbot, path: str | Path):
     """Save an optimized program to disk."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -137,9 +136,9 @@ def save_program(program: TranslationChatbot, path: str | Path):
     print(f"Saved optimized program to {path}")
 
 
-def load_program(path: str | Path, chroma_dir: str = "chroma_db") -> TranslationChatbot:
+def load_program(path: str | Path, chroma_dir: str = "chroma_db") -> HiligaynonChatbot:
     """Load an optimized program from disk."""
-    chatbot = TranslationChatbot(chroma_dir=chroma_dir)
+    chatbot = HiligaynonChatbot(chroma_dir=chroma_dir)
     chatbot.load(str(path))
     print(f"Loaded optimized program from {path}")
     return chatbot
@@ -168,7 +167,7 @@ if __name__ == "__main__":
 
     # Create chatbot
     chroma_dir = project_root / "chroma_db"
-    chatbot = TranslationChatbot(chroma_dir=str(chroma_dir))
+    chatbot = HiligaynonChatbot(chroma_dir=str(chroma_dir))
 
     # Optimize
     print("\n--- Running BootstrapFewShot optimization ---")

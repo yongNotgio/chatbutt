@@ -1,100 +1,141 @@
 """
-DSPy Signatures for the English-Hiligaynon-Akeanon translation chatbot.
+DSPy Signatures for the English ↔ Hiligaynon conversational chatbot.
 
-Signatures are declarative specs that tell DSPy what the input/output
-behavior of each module should be, without specifying how to achieve it.
+Focuses on:
+- Bidirectional translation (English → Hiligaynon and Hiligaynon → English)
+- Input analysis before responding
+- Vowel-aware matching (o/u, i/e interchangeability)
+- Natural conversational output
 """
 
 import dspy
 from typing import Literal
 
 
-class ClassifyQuery(dspy.Signature):
-    """Classify a user's translation query into a type and extract the text to translate.
+class AnalyzeInput(dspy.Signature):
+    """Analyze the user's input to determine what they want and what language it is in.
 
-    Query types:
-    - 'word': single word translation lookup
-    - 'phrase': multi-word phrase or expression translation
-    - 'sentence': full sentence translation
-    - 'grammar': grammar or usage question about Hiligaynon or Akeanon
+    Hiligaynon (Ilonggo) is a Visayan language of the Western Visayas in the Philippines.
+    It has vowel interchangeability: 'o' and 'u' are often used interchangeably,
+    as are 'i' and 'e'. For example, 'buot' and 'boot' mean the same thing;
+    'diin' and 'deen' are the same word.
+
+    Determine:
+    1. The input language (English, Hiligaynon, or mixed/unclear)
+    2. The intent (translate, ask about meaning, ask about grammar/usage, general chat)
+    3. The key text to work with
     """
 
-    user_query: str = dspy.InputField(desc="The user's input message")
-    query_type: Literal["word", "phrase", "sentence", "grammar"] = dspy.OutputField(
-        desc="The type of translation query"
+    user_message: str = dspy.InputField(desc="The user's chat message")
+
+    input_language: Literal["english", "hiligaynon", "mixed", "unclear"] = dspy.OutputField(
+        desc="Detected language of the user's input"
     )
-    extracted_text: str = dspy.OutputField(
-        desc="The English text to be translated, extracted from the query"
+    intent: Literal["translate", "define", "grammar", "chat"] = dspy.OutputField(
+        desc="What the user wants: translate text, define a word, ask about grammar, or general chat"
+    )
+    key_text: str = dspy.OutputField(
+        desc="The key word/phrase/sentence to translate or explain, extracted from the message"
+    )
+    analysis: str = dspy.OutputField(
+        desc="Brief analysis of the input: language features noticed, any vowel variants, word structure notes"
     )
 
 
-class TranslateWord(dspy.Signature):
-    """Translate a single English word into Hiligaynon and Akeanon (Aklanon).
+class TranslateToHiligaynon(dspy.Signature):
+    """Translate English text into Hiligaynon and respond conversationally.
 
-    Use the provided dictionary context to find accurate translations.
-    Hiligaynon is a major Philippine language spoken in Western Visayas.
-    Akeanon (Aklanon) is a related language spoken in Aklan province.
-    If the word is NOT found in the dictionary context, use your linguistic
-    knowledge to provide the best possible translation, and note the uncertainty.
+    Hiligaynon is a VSO (Verb-Subject-Object) language with a focus/trigger system.
+    Key grammar notes:
+    - Vowels o/u and i/e are interchangeable (both forms are correct)
+    - Uses 'ang' (nominative), 'sang/sing' (genitive), 'sa' (dative) markers
+    - Verb affixes indicate focus: mag- (actor), -on (object), i- (benefactive), -an (locative)
+    - Common greetings: 'Maayong aga' (good morning), 'Maayong hapon' (good afternoon)
+
+    Use the dictionary context to ground translations in real Hiligaynon words.
+    Respond naturally — explain the translation, mention alternatives if they exist,
+    and note any interesting linguistic features.
     """
 
-    english_word: str = dspy.InputField(desc="The English word to translate")
-    part_of_speech: str = dspy.InputField(
-        desc="Part of speech (noun, verb, adjective, etc.), if known"
-    )
+    english_text: str = dspy.InputField(desc="The English text to translate")
     dictionary_context: list[str] = dspy.InputField(
-        desc="Relevant dictionary entries retrieved for context"
+        desc="Relevant dictionary entries for grounding the translation"
     )
-    hiligaynon: str = dspy.OutputField(
-        desc="Translation(s) in Hiligaynon, separated by commas if multiple"
+    input_analysis: str = dspy.InputField(
+        desc="Analysis of the input from the analysis step"
     )
-    akeanon: str = dspy.OutputField(
-        desc="Translation(s) in Akeanon, separated by commas if multiple"
-    )
-    notes: str = dspy.OutputField(
-        desc="Brief usage notes or confidence level"
+
+    response: str = dspy.OutputField(
+        desc="A natural, conversational response that includes the Hiligaynon translation, "
+        "explains the translation, mentions vowel variants if applicable, and provides "
+        "usage context. Do NOT use a rigid structured format."
     )
 
 
-class TranslatePhrase(dspy.Signature):
-    """Translate an English phrase or sentence into Hiligaynon and Akeanon (Aklanon).
+class TranslateToEnglish(dspy.Signature):
+    """Translate Hiligaynon text into English and respond conversationally.
 
-    Use the dictionary context as a reference for individual words, then compose
-    the phrase/sentence translation considering the grammar and word order of each
-    target language. Hiligaynon and Akeanon are VSO (Verb-Subject-Object) languages
-    with focus/trigger systems.
+    Hiligaynon has vowel interchangeability: o/u and i/e can be swapped.
+    When looking up words, try both vowel variants.
+    Example: 'buut' = 'boot' = 'buot' (mind/will/desire).
+
+    Use the dictionary context to find accurate definitions.
+    Respond naturally — give the English meaning, explain nuances,
+    mention related words, and note any vowel variants.
     """
 
-    english_text: str = dspy.InputField(
-        desc="The English phrase or sentence to translate"
-    )
+    hiligaynon_text: str = dspy.InputField(desc="The Hiligaynon text to translate")
     dictionary_context: list[str] = dspy.InputField(
-        desc="Relevant dictionary entries for words in the phrase"
+        desc="Relevant dictionary entries for grounding the translation"
     )
-    hiligaynon: str = dspy.OutputField(desc="Translation in Hiligaynon")
-    akeanon: str = dspy.OutputField(desc="Translation in Akeanon")
-    literal_breakdown: str = dspy.OutputField(
-        desc="Word-by-word breakdown showing how the translation was constructed"
+    input_analysis: str = dspy.InputField(
+        desc="Analysis of the input from the analysis step"
     )
-    notes: str = dspy.OutputField(
-        desc="Grammar notes or other relevant information"
+
+    response: str = dspy.OutputField(
+        desc="A natural, conversational response that includes the English translation, "
+        "explains meaning and usage, mentions vowel variants (o/u, i/e) if relevant, "
+        "and provides cultural or linguistic context when helpful."
     )
 
 
-class AnswerGrammarQuestion(dspy.Signature):
-    """Answer a question about Hiligaynon or Akeanon grammar, usage, or culture.
+class ExplainGrammar(dspy.Signature):
+    """Answer a question about Hiligaynon grammar, usage, or word structure.
 
-    Use the dictionary context and your knowledge of Philippine linguistics
-    to provide an informative answer.
+    Hiligaynon linguistics notes:
+    - Vowel interchangeability: o↔u, i↔e (same meaning, regional preference)
+    - Rich verb morphology: affixes mag-, nag-, ga-, -on, -an, i-, etc.
+    - Focus/trigger system (not simply active/passive)
+    - Reduplication for plurals, intensity, or continuity
+    - Ligatures: nga (or -ng after vowels) connecting modifiers
+
+    Respond conversationally with clear explanations and examples.
     """
 
-    question: str = dspy.InputField(desc="The user's grammar or usage question")
+    question: str = dspy.InputField(desc="The grammar or usage question")
     dictionary_context: list[str] = dspy.InputField(
-        desc="Relevant dictionary entries for context"
+        desc="Relevant dictionary entries for examples"
     )
-    answer: str = dspy.OutputField(
-        desc="A clear, informative answer about the grammar or usage"
+
+    response: str = dspy.OutputField(
+        desc="A clear, conversational explanation with examples from the dictionary. "
+        "Mention vowel variants where relevant."
     )
-    examples: str = dspy.OutputField(
-        desc="Example words or phrases illustrating the grammar point"
+
+
+class ConversationalResponse(dspy.Signature):
+    """Generate a helpful conversational response for general chat about Hiligaynon.
+
+    The user might be asking about the language in general, about culture,
+    or making a request that doesn't fit neatly into translation or grammar.
+    Be helpful, friendly, and knowledgeable about Hiligaynon.
+    """
+
+    user_message: str = dspy.InputField(desc="The user's message")
+    dictionary_context: list[str] = dspy.InputField(
+        desc="Any relevant dictionary entries"
+    )
+
+    response: str = dspy.OutputField(
+        desc="A helpful, conversational response about Hiligaynon language or culture"
     )
