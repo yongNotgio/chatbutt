@@ -86,13 +86,8 @@ help you learn.
 """
 
 EXAMPLES = [
-    "What does 'maayo' mean?",
-    "How do you say 'good morning' in Hiligaynon?",
-    "Translate: I love you",
-    "ano ang buot silingon sang 'balay'?",
+
     "What is 'water' in Hiligaynon?",
-    "Explain the difference between 'o' and 'u' in Hiligaynon",
-    "diin ka gakadto?",
     "Translate: The food is delicious",
 ]
 
