@@ -105,6 +105,6 @@ def create_app():
 if __name__ == "__main__":
     print("Initializing chatbot...")
     initialize()
-    print("Starting Gradio app...")
+    print("Starting app...")
     app = create_app()
     app.launch(share=False)
