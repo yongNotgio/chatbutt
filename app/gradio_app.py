@@ -1,5 +1,5 @@
 """
-Gradio chatbot interface for the English ↔ Hiligaynon translator.
+this is the main Gradio app for the Hiligaynon chatbot.
 
 This app uses a custom LM-powered chatbot that can translate between English and Hiligaynon (Ilonggo), explain word meanings, and help users learn the language. It supports conversational input, so you can ask questions like "What does *maayo* mean?" or "How do you say *beautiful* in Hiligaynon?" and get instant translations and explanations.
 
