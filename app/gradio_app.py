@@ -103,7 +103,7 @@ def create_app():
 
 
 if __name__ == "__main__":
-    print("Initializing Hiligaynon chatbot...")
+    print("Initializing chatbot...")
     initialize()
     print("Starting Gradio app...")
     app = create_app()
